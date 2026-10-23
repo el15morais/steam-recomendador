@@ -1,0 +1,19 @@
+# Dados (pesados demais para o GitHub — cada um baixa com scripts/baixar_dados.py)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+models/*
+!models/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# Sistema
+.DS_Store
+Thumbs.db
