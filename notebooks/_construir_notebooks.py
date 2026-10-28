@@ -86,9 +86,10 @@ code('''problemas_a = {
 problemas_a'''),
 md("### Gêneros mais frequentes (figura usada no seminário, agora reproduzível em código)"),
 code('''generos = (A.drop_duplicates("app_id")["genres"].map(p.parse_lista)
-             .explode().dropna().value_counts().head(10).sort_values())
+             .explode().dropna().value_counts().head(10))
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.barh(generos.index, generos.values, color=g.AZUL, height=0.7)
+sns.barplot(x=generos.values, y=generos.index, color=g.AZUL, width=0.7, saturation=1, ax=ax)
+ax.set_ylabel("")
 g.rotular_barras(ax, horizontal=True)
 ax.set_title("Figura 1 — Os 10 gêneros mais frequentes (base A)")
 ax.set_xlabel("Quantidade de jogos")
@@ -102,7 +103,7 @@ print(total_av.describe(percentiles=[.25, .5, .75, .9, .99]))
 print(f"Jogos com menos de {config.MIN_AVALIACOES_QUALIDADE} avaliações: {(total_av < config.MIN_AVALIACOES_QUALIDADE).mean():.1%}")
 
 fig, ax = plt.subplots()
-ax.hist(np.log10(total_av + 1), bins=50, color=g.AZUL, edgecolor="white", linewidth=0.5)
+sns.histplot(np.log10(total_av + 1), bins=50, color=g.AZUL, edgecolor="white", linewidth=0.5, alpha=1, ax=ax)
 ax.axvline(np.log10(config.MIN_AVALIACOES_QUALIDADE + 1), color=g.TEXTO_SECUNDARIO, ls="--", lw=1)
 ax.text(np.log10(config.MIN_AVALIACOES_QUALIDADE + 1) + 0.05, ax.get_ylim()[1] * 0.9,
         f"mínimo = {config.MIN_AVALIACOES_QUALIDADE}", color=g.TEXTO_SECUNDARIO)
@@ -119,7 +120,8 @@ ordem = ["Extremamente positivas", "Muito positivas", "Positivas",
 contagem_faixas = faixas.value_counts().reindex(ordem, fill_value=0)
 
 fig, ax = plt.subplots(figsize=(8, 4))
-ax.barh(contagem_faixas.index[::-1], contagem_faixas.values[::-1], color=g.AZUL, height=0.7)
+sns.barplot(x=contagem_faixas.values, y=contagem_faixas.index, color=g.AZUL, width=0.7, saturation=1, ax=ax)
+ax.set_ylabel("")
 g.rotular_barras(ax, horizontal=True)
 ax.set_title("Figura 3 — Jogos por faixa de taxa negativa (base A)")
 ax.set_xlabel("Quantidade de jogos")
@@ -152,8 +154,9 @@ neg = resumo_recs["linhas_base_completa"] - pos
 bal = pd.Series({"Recomendou (positiva)": pos, "Não recomendou (negativa)": neg})
 
 fig, ax = plt.subplots(figsize=(7, 3.2))
-ax.barh(bal.index[::-1], bal.values[::-1], color=g.AZUL, height=0.6)
-for i, v in enumerate(bal.values[::-1]):
+sns.barplot(x=bal.values, y=bal.index, color=g.AZUL, width=0.6, saturation=1, ax=ax)
+ax.set_ylabel("")
+for i, v in enumerate(bal.values):
     ax.text(v, i, f"  {g.br(v)} ({g.br(v / bal.sum() * 100, '{:.1f}')}%)", va="center", color=g.TEXTO_SECUNDARIO)
 ax.margins(x=0.35)
 ax.set_title("Figura 4 — Balanceamento de is_recommended (base B completa)")
@@ -169,7 +172,7 @@ print(f"Usuários com >= {config.MIN_INTERACOES_USUARIO} jogos recomendados: "
       f"{(por_usuario >= config.MIN_INTERACOES_USUARIO).mean():.1%}")
 
 fig, ax = plt.subplots()
-ax.hist(por_usuario.clip(upper=50), bins=np.arange(0.5, 51.5, 1), color=g.AZUL, edgecolor="white", linewidth=0.5)
+sns.histplot(por_usuario.clip(upper=50), discrete=True, color=g.AZUL, edgecolor="white", linewidth=0.5, alpha=1, ax=ax)
 ax.axvline(config.MIN_INTERACOES_USUARIO, color=g.TEXTO_SECUNDARIO, ls="--", lw=1)
 ax.set_yscale("log")
 ax.set_title("Figura 5 — Jogos recomendados por usuário (valores acima de 50 agrupados)")
@@ -214,12 +217,16 @@ code('''resumo_entendimento = {
 with open(config.RESULTADOS / "resumo_entendimento.json", "w", encoding="utf-8") as f:
     json.dump(resumo_entendimento, f, ensure_ascii=False, indent=2, default=float)
 resumo_entendimento'''),
-md("""## Principais achados desta etapa (preencher com os números acima para o artigo)
-- **Qualidade dos dados (A):** duplicatas de `app_id`, nomes vazios e jogos sem gênero/tags → tratados na preparação.
-- **Avaliações:** distribuição muito assimétrica; muitos jogos com poucas avaliações → a taxa negativa precisa de volume mínimo.
-- **Desbalanceamento (B):** `is_recommended` majoritariamente positivo → modelagem como feedback implícito positivo.
-- **Cauda longa:** poucos jogos concentram a maior parte das interações → baseline de popularidade é obrigatório e a cobertura do catálogo deve ser medida.
-- **Junção:** a maior parte dos jogos de B existe em A → o enriquecimento com gêneros/categorias é viável.
+md("""## Principais achados desta etapa (execução registrada neste repositório)
+- **Formato misto na base A:** gêneros e categorias aparecem ora como texto simples, ora como objetos da API da Steam
+  (`{"id": "1", "description": "Action"}`) → o leitor `parse_lista` trata os dois formatos.
+- **Faltantes na base A:** cerca de 8,4 mil jogos sem gênero, 61,5 mil sem tags e 61,9 mil sem nenhuma avaliação.
+- **Avaliações muito assimétricas:** mediana de 3 avaliações por jogo e 78,8% dos jogos com menos de 50 →
+  a taxa negativa do seminário precisa de volume mínimo.
+- **Desbalanceamento (B):** 85,8% das 41,2 milhões de avaliações são positivas → modelagem como feedback implícito positivo.
+- **Cauda longa:** mediana de 1 jogo recomendado por usuário, só 6,2% têm 8 ou mais, e 10% dos jogos concentram 91% das
+  interações → baseline de popularidade obrigatório e cobertura do catálogo como métrica.
+- **Junção:** 77,5% dos jogos da base B estão na base A; para os demais, as tags da base B descrevem o jogo.
 """),
 ]
 
@@ -265,7 +272,8 @@ code('''ordem = ["Extremamente positivas", "Muito positivas", "Positivas",
 dist_q = catalogo["classificacao_qualidade"].value_counts().reindex(ordem, fill_value=0)
 
 fig, ax = plt.subplots(figsize=(8, 4))
-ax.barh(dist_q.index[::-1], dist_q.values[::-1], color=g.AZUL, height=0.7)
+sns.barplot(x=dist_q.values, y=dist_q.index, color=g.AZUL, width=0.7, saturation=1, ax=ax)
+ax.set_ylabel("")
 g.rotular_barras(ax, horizontal=True)
 ax.set_title("Figura 7 — Catálogo por classificação de qualidade")
 ax.set_xlabel("Quantidade de jogos")
@@ -480,16 +488,15 @@ curva = pd.DataFrame(curva)
 curva.to_csv(config.RESULTADOS / "curva_tamanho_perfil.csv", index=False)
 
 fig, ax = plt.subplots(figsize=(8, 4.2))
-for cor, (nome, d) in zip(g.CORES, curva.groupby("modelo", sort=False)):
-    ax.plot(d["jogos_no_perfil"], d["ndcg@10"], color=cor, marker="o", markersize=6,
-            markeredgecolor="white", markeredgewidth=1.5, label=nome)
+sns.lineplot(data=curva, x="jogos_no_perfil", y="ndcg@10", hue="modelo", palette=g.CORES[:3],
+             marker="o", markersize=6, markeredgecolor="white", markeredgewidth=1.5, linewidth=2, ax=ax)
 ax.set_xticks(range(1, 6))
 ax.set_xlim(0.8, 5.2)
 ax.set_xlabel("Jogos recentes usados no perfil")
 ax.set_ylabel("NDCG@10")
 g.eixo_br(ax, "y", "{:.3f}")
 ax.set_title("Figura 10 — Efeito do tamanho do perfil no desempenho (teste)")
-ax.legend(loc="best")
+ax.legend(loc="best", title=None)
 g.salvar(fig, "fig10_curva_tamanho_perfil")
 plt.show()'''),
 md("### Filtro de qualidade: ajuda ou atrapalha?"),
@@ -503,11 +510,12 @@ ablacao = pd.DataFrame(abl)[["modelo", "filtro_qualidade", "precision@10", "reca
 ablacao.to_csv(config.RESULTADOS / "ablacao_filtro_qualidade.csv", index=False)
 ablacao'''),
 md("""## Avaliação qualitativa (proposta do seminário: notas 0, 1 e 2)
-Perfis montados à mão com jogos conhecidos. O CSV exportado tem uma coluna `nota_relevancia` em branco para o grupo
-preencher (2 = relevante, 1 = parcialmente relevante, 0 = irrelevante). Jogos que não existirem no catálogo são ignorados."""),
+Perfis montados à mão com jogos conhecidos. O grupo deu uma nota a cada recomendação — 2 = relevante,
+1 = parcialmente relevante, 0 = irrelevante — sempre em relação aos jogos de entrada. As notas, com a justificativa
+de cada uma, estão em `reports/results/avaliacao_qualitativa_notas.csv`."""),
 code('''perfis_teste = {
     "Seminário (FPS + RPG + Souls)": ["Call of Duty", "Cyberpunk 2077", "ELDEN RING", "Counter-Strike", "Red Dead Redemption 2"],
-    "Indie / relaxante": ["Stardew Valley", "Terraria", "Hades", "Hollow Knight", "Celeste"],
+    "Indie": ["Stardew Valley", "Terraria", "Hades", "Hollow Knight", "Celeste"],
     "Estratégia": ["Civilization VI", "Total War", "Crusader Kings", "Stellaris", "Age of Empires"],
 }
 
@@ -535,8 +543,29 @@ for perfil_nome, nomes_jogos in perfis_teste.items():
                            "posicao": pos_, "recomendado": linha.nome, "score": round(linha.score, 4),
                            "nota_relevancia": ""})
 qualitativa = pd.DataFrame(linhas)
-qualitativa.to_csv(config.RESULTADOS / "avaliacao_qualitativa_para_preencher.csv", index=False)
+qualitativa.to_csv(config.RESULTADOS / "avaliacao_qualitativa_recomendacoes.csv", index=False)
 qualitativa.head(20)'''),
+code('''arq_notas = config.RESULTADOS / "avaliacao_qualitativa_notas.csv"
+if arq_notas.exists():
+    notas = pd.read_csv(arq_notas)
+    chave = ["perfil", "jogos_no_perfil", "posicao", "recomendado"]
+    conferido = qualitativa[chave].merge(notas[chave], on=chave, how="left", indicator=True)
+    print(f"Recomendações desta execução iguais às avaliadas pelo grupo: {(conferido['_merge'] == 'both').mean():.0%}")
+
+    def resumir(grupo):
+        return grupo["nota_relevancia"].agg(
+            nota_media="mean",
+            pct_nota_2=lambda s: (s == 2).mean(),
+            pct_nota_0=lambda s: (s == 0).mean(),
+        ).reset_index()
+
+    por_perfil = resumir(notas.groupby(["perfil", "jogos_no_perfil"], sort=False))
+    geral = resumir(notas.groupby("jogos_no_perfil")).assign(perfil="Média geral")
+    resumo_q = pd.concat([por_perfil, geral], ignore_index=True)
+    resumo_q.to_csv(config.RESULTADOS / "avaliacao_qualitativa_resumo.csv", index=False)
+    display(resumo_q)
+else:
+    print("Notas ainda não preenchidas.")'''),
 md("## Salvando o modelo final para a API (CRISP-DM — etapa 6, Implantação)"),
 code('''joblib.dump({"indice": indice, "modelo": hibrido, "alpha": melhor_alpha, "svd_dimensoes": melhor_d},
             config.MODELOS / "recomendador.joblib", compress=3)

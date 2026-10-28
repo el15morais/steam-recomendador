@@ -33,7 +33,7 @@ Com ela dá para montar perfis reais, medir a qualidade das recomendações com 
 
 | Base | Conteúdo | Link |
 |---|---|---|
-| A — Steam Games Dataset | metadados de ~160 mil jogos: gêneros, categorias, tags, avaliações | [Kaggle](https://www.kaggle.com/datasets/hubertsidorowicz/steam-games-dataset-daily-updates) |
+| A — Steam Games Dataset | metadados de ~145 mil jogos: gêneros, categorias, tags, avaliações | [Kaggle](https://www.kaggle.com/datasets/hubertsidorowicz/steam-games-dataset-daily-updates) |
 | B — Game Recommendations on Steam | ~41 milhões de recomendações usuário × jogo, com data e horas jogadas | [Kaggle](https://www.kaggle.com/datasets/antonkozyriev/game-recommendations-on-steam) |
 
 As bases são unidas pelo `app_id`. Os arquivos brutos **não vão para o GitHub** (são grandes demais).
