@@ -448,6 +448,26 @@ testes = pd.DataFrame(testes)
 testes["significativo_5%"] = testes["p_valor"] < 0.05
 testes.to_csv(config.RESULTADOS / "teste_wilcoxon_1x5.csv", index=False)
 testes'''),
+md("""### Comparação entre modelos (perfil de 5 jogos) — as diferenças são reais?
+Mesmo teste pareado, agora entre modelos. Responde, por exemplo, se o híbrido é de fato melhor que o item-item
+puro ou se a diferença está dentro do ruído. Para dar escala aos números absolutos, calculamos também o HitRate@10
+esperado de uma recomendação **aleatória**."""),
+code('''pares = [(hibrido, item_item), (item_item, svd), (item_item, tfidf_max), (item_item, pop), (tfidf_max, pop)]
+comp = []
+for melhor, outro in pares:
+    a = por_usuario[(outro.nome, 5)]["ndcg"]
+    b_ = por_usuario[(melhor.nome, 5)]["ndcg"]
+    comp.append({"modelo_A": melhor.nome, "modelo_B": outro.nome,
+                 "ndcg_A": b_.mean(), "ndcg_B": a.mean(), **av.comparar_pareado(a, b_)})
+comp = pd.DataFrame(comp)
+comp["significativo_5%"] = comp["p_valor"] < 0.05
+comp.to_csv(config.RESULTADOS / "teste_wilcoxon_modelos.csv", index=False)
+
+n_alvo = casos_teste["alvo"].map(len).mean()
+hr_aleatorio = 1 - (1 - n_alvo / indice.n) ** config.K
+print(f"HitRate@10 esperado de uma recomendação aleatória: {hr_aleatorio:.3%} "
+      f"({n_alvo:.1f} jogos escondidos por usuário, catálogo de {indice.n:,} jogos)")
+comp'''),
 md("### Quantos jogos recentes usar? (curva de 1 a 5 jogos no perfil)"),
 code('''curva = []
 for modelo in [tfidf_media, item_item, hibrido]:

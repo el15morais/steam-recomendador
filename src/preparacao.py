@@ -26,20 +26,36 @@ from . import config
 # ---------------------------------------------------------------------------
 # Utilitários de texto
 # ---------------------------------------------------------------------------
+CHAVES_ROTULO = ("description", "name", "label", "value")
+
+
 def parse_lista(valor) -> list[str]:
     """
     Converte uma célula em lista de strings, aceitando os formatos que aparecem
-    em datasets da Steam:
+    em datasets da Steam (a base A mistura formatos entre linhas):
       "['Action', 'Indie']"   (literal Python)
       '["Action", "Indie"]'   (JSON)
+      '[{"id": "1", "description": "Action"}]'  (objetos da API da Steam)
       "{'FPS': 1200, ...}"    (dicionário tag -> votos; ficamos com as chaves)
       "Action,Indie"          (separado por vírgula / ; / |)
       ['Action', 'Indie']     (lista já pronta)
     """
     if isinstance(valor, (list, tuple, np.ndarray)):
-        return [str(v).strip() for v in valor if str(v).strip()]
+        saida = []
+        for v in valor:
+            # Formato da API da Steam: [{"id": "1", "description": "Action"}, ...]
+            if isinstance(v, dict):
+                v = next((v[k] for k in CHAVES_ROTULO if k in v), None)
+                if v is None:
+                    continue
+            v = str(v).strip()
+            if v:
+                saida.append(v)
+        return saida
     if isinstance(valor, dict):
-        return [str(k).strip() for k in valor if str(k).strip()]
+        if any(k in valor for k in CHAVES_ROTULO):          # um único objeto {"description": ...}
+            return parse_lista([valor])
+        return [str(k).strip() for k in valor if str(k).strip()]  # {"FPS": 1200, ...} -> chaves
     if valor is None or (isinstance(valor, float) and np.isnan(valor)):
         return []
 

@@ -19,6 +19,9 @@ Modelos:
 """
 from __future__ import annotations
 
+import re
+import unicodedata
+
 import numpy as np
 import pandas as pd
 from scipy import sparse
@@ -47,8 +50,18 @@ class IndiceCatalogo:
     def para_app_ids(self, posicoes) -> list[int]:
         return [int(self.app_ids[p]) for p in posicoes]
 
+    @staticmethod
+    def _normalizar_nome(texto) -> str:
+        """'Sid Meier’s Civilization® VI' -> 'sid meiers civilization vi'"""
+        texto = unicodedata.normalize("NFKD", str(texto)).encode("ascii", "ignore").decode().lower()
+        texto = re.sub(r"[^a-z0-9 ]+", "", texto)
+        return re.sub(r"\s+", " ", texto).strip()
+
     def buscar_por_nome(self, nome: str) -> pd.DataFrame:
-        mascara = self.catalogo["nome"].str.contains(nome, case=False, na=False, regex=False)
+        if "_nome_normalizado" not in self.catalogo:
+            self.catalogo["_nome_normalizado"] = self.catalogo["nome"].map(self._normalizar_nome)
+        alvo = self._normalizar_nome(nome)
+        mascara = self.catalogo["_nome_normalizado"].str.contains(alvo, na=False, regex=False)
         return self.catalogo.loc[mascara, ["app_id", "nome", "total_avaliacoes"]].sort_values(
             "total_avaliacoes", ascending=False)
 
