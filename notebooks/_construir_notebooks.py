@@ -154,7 +154,7 @@ bal = pd.Series({"Recomendou (positiva)": pos, "Não recomendou (negativa)": neg
 fig, ax = plt.subplots(figsize=(7, 3.2))
 ax.barh(bal.index[::-1], bal.values[::-1], color=g.AZUL, height=0.6)
 for i, v in enumerate(bal.values[::-1]):
-    ax.text(v, i, f"  {g.br(v)} ({v / bal.sum():.1%})", va="center", color=g.TEXTO_SECUNDARIO)
+    ax.text(v, i, f"  {g.br(v)} ({g.br(v / bal.sum() * 100, '{:.1f}')}%)", va="center", color=g.TEXTO_SECUNDARIO)
 ax.margins(x=0.35)
 ax.set_title("Figura 4 — Balanceamento de is_recommended (base B completa)")
 ax.set_xlabel("Quantidade de avaliações")
@@ -388,11 +388,13 @@ fig, ax = plt.subplots(figsize=(7, 3.8))
 ax.plot(grade_alpha["alpha"], grade_alpha["ndcg@10"], color=g.AZUL, marker="o", markersize=6,
         markeredgecolor="white", markeredgewidth=1.5)
 ax.scatter([melhor_alpha], [grade_alpha["ndcg@10"].max()], s=90, facecolor="none", edgecolor=g.TEXTO, zorder=4)
-ax.annotate(f"melhor α = {melhor_alpha:.1f}", (melhor_alpha, grade_alpha["ndcg@10"].max()),
+ax.annotate(f"melhor α = {g.br(melhor_alpha, '{:.1f}')}", (melhor_alpha, grade_alpha["ndcg@10"].max()),
             xytext=(10, -18), textcoords="offset points", color=g.TEXTO)
 ax.set_title("Figura 8 — Ajuste do peso do conteúdo no híbrido (validação)")
 ax.set_xlabel("α (peso do conteúdo)")
 ax.set_ylabel("NDCG@10")
+g.eixo_br(ax, "x", "{:.1f}")
+g.eixo_br(ax, "y", "{:.3f}")
 g.salvar(fig, "fig08_ajuste_alpha_hibrido")
 plt.show()
 grade_alpha'''),
@@ -485,6 +487,7 @@ ax.set_xticks(range(1, 6))
 ax.set_xlim(0.8, 5.2)
 ax.set_xlabel("Jogos recentes usados no perfil")
 ax.set_ylabel("NDCG@10")
+g.eixo_br(ax, "y", "{:.3f}")
 ax.set_title("Figura 10 — Efeito do tamanho do perfil no desempenho (teste)")
 ax.legend(loc="best")
 g.salvar(fig, "fig10_curva_tamanho_perfil")

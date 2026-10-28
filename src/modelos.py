@@ -251,7 +251,7 @@ class Hibrido(Recomendador):
 
     @property
     def nome(self):
-        return f"Híbrido (α={self.peso_conteudo:.1f})"
+        return f"Híbrido (α={self.peso_conteudo:.1f})".replace(".", ",")
 
     def pontuar_lote(self, perfis):
         a = _minmax_linhas(self.conteudo.pontuar_lote(perfis))
