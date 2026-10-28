@@ -54,7 +54,7 @@ JÄRVELIN, K.; KEKÄLÄINEN, J. Cumulated gain-based evaluation of IR techniques
 
 KOREN, Y.; BELL, R.; VOLINSKY, C. Matrix factorization techniques for recommender systems. **Computer**, v. 42, n. 8, p. 30-37, 2009.
 
-KOZYRIEV, A. **Game Recommendations on Steam**. Kaggle, 2023. Disponível em: https://www.kaggle.com/datasets/antonkozyriev/game-recommendations-on-steam. Acesso em: [data].
+KOZYRIEV, A. **Game Recommendations on Steam**. Kaggle, 2024. Disponível em: https://www.kaggle.com/datasets/antonkozyriev/game-recommendations-on-steam. Acesso em: [data].
 
 LOPS, P.; DE GEMMIS, M.; SEMERARO, G. Content-based recommender systems: state of the art and trends. In: RICCI, F. et al. (ed.). **Recommender Systems Handbook**. Boston: Springer, 2011. p. 73-105.
 

@@ -1,0 +1,19 @@
+{
+  "base_a_linhas": 144981,
+  "base_a_colunas_usadas": 14,
+  "base_a_app_id_duplicados": 0,
+  "base_a_nome_vazio": 16,
+  "base_a_sem_genero": 8433,
+  "base_a_sem_tags": 61512,
+  "base_a_sem_nenhuma_avaliacao": 61904,
+  "base_b_jogos": 50872,
+  "base_b_usuarios": 14306064,
+  "base_b_linhas_base_completa": 41154794,
+  "base_b_positivas_base_completa": 35304398,
+  "base_b_proporcao_positivas_base_completa": 0.8578441189621797,
+  "base_b_percentual_usuarios_amostrados": 15,
+  "base_b_linhas_amostra": 6166612,
+  "cobertura_b_em_a": 0.7750825601509671,
+  "top10pct_jogos_share_interacoes": 91.08631073223333,
+  "mediana_jogos_por_usuario_amostra": 1.0
+}

@@ -1,0 +1,15 @@
+,tipo,nao_nulos,faltantes,faltantes_%,valores_unicos
+app_id,int64,144981,0,0.0,144981
+name,object,144965,16,0.01,143478
+release_date,object,144899,82,0.06,5373
+price,float64,143611,1370,0.94,987
+estimated_owners,object,144981,0,0.0,27
+developers,object,144981,0,0.0,86078
+publishers,object,144981,0,0.0,77343
+genres,object,144981,0,0.0,4243
+categories,object,144981,0,0.0,22816
+tags,object,144981,0,0.0,80692
+positive,int64,144981,0,0.0,5542
+negative,int64,144981,0,0.0,2728
+recommendations,float64,101511,43470,29.98,5440
+average_playtime_forever,int64,144981,0,0.0,2080

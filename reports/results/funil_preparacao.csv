@@ -1,0 +1,15 @@
+base,etapa,registros,removidos
+A (metadados),bruto,144981,0
+A (metadados),sem app_id nulo,144981,0
+A (metadados),sem app_id duplicado,144981,0
+A (metadados),com nome preenchido,144965,16
+B (jogos),bruto,50872,0
+B (jogos),sem app_id duplicado,50872,0
+Catálogo (A+B),jogos da base B,50872,0
+Catálogo (A+B),jogos também presentes na base A,39430,11442
+B (interações),amostra de usuários,6166612,0
+B (interações),sem data/usuário/jogo nulo,6166612,0
+B (interações),só recomendações positivas,5295170,871442
+B (interações),jogo no catálogo com características,5264766,30404
+B (interações),sem par usuário-jogo duplicado,5264763,3
+B (interações),usuários >= 8 e jogos >= 5 interações,1935287,3329476

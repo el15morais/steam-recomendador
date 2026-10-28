@@ -1,0 +1,14 @@
+{
+  "melhor_alpha": 0.4,
+  "svd_dimensoes": 16,
+  "tempos_treino_s": {
+    "Popularidade": 0.06369757652282715,
+    "Conteúdo TF-IDF (média)": 0.2510840892791748,
+    "Conteúdo TF-IDF (máximo)": 0.24623489379882812,
+    "Colaborativo item-item": 5.992024898529053,
+    "Fatoração SVD": 0.8390789031982422
+  },
+  "densidade_matriz": 0.0008827750653077408,
+  "usuarios_validacao": 1500,
+  "usuarios_teste": 3500
+}

@@ -1,0 +1,16 @@
+modelo,jogos_no_perfil,ndcg@10
+Conteúdo TF-IDF (média),1,0.01892044521216082
+Conteúdo TF-IDF (média),2,0.023168278934565214
+Conteúdo TF-IDF (média),3,0.023655712471657556
+Conteúdo TF-IDF (média),4,0.022914861957282175
+Conteúdo TF-IDF (média),5,0.022168558221575815
+Colaborativo item-item,1,0.040275675927232135
+Colaborativo item-item,2,0.04705467254835346
+Colaborativo item-item,3,0.05040671189596779
+Colaborativo item-item,4,0.05123541675646754
+Colaborativo item-item,5,0.05209691248218711
+"Híbrido (α=0,4)",1,0.0389917887471668
+"Híbrido (α=0,4)",2,0.046704511552146055
+"Híbrido (α=0,4)",3,0.05072822010654514
+"Híbrido (α=0,4)",4,0.05236474030108652
+"Híbrido (α=0,4)",5,0.054981138134001815

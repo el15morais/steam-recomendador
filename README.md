@@ -13,6 +13,22 @@ Seguindo o feedback do professor, **incorporamos uma segunda base com interaçõ
 Com ela dá para montar perfis reais, medir a qualidade das recomendações com métricas objetivas
 (Precision, Recall, HitRate e NDCG @10) e comparar modelos de conteúdo com modelos colaborativos.
 
+## Resultados (conjunto de teste, 3.500 usuários)
+
+| Modelo | NDCG@10 (1 jogo) | NDCG@10 (5 jogos) | HitRate@10 (5 jogos) | Cobertura (5 jogos) | 1 × 5 significativo? |
+|---|---|---|---|---|---|
+| Popularidade | 0,017 | 0,017 | 7,7% | 0,1% | — |
+| Conteúdo TF-IDF (média) | 0,019 | 0,022 | 8,0% | 33,6% | não |
+| Conteúdo TF-IDF (máximo) | 0,019 | 0,025 | 8,3% | 36,3% | sim |
+| Colaborativo item-item | 0,040 | 0,052 | 18,7% | 29,2% | sim |
+| Fatoração SVD (16 dim.) | 0,034 | 0,038 | 15,4% | 1,1% | sim |
+| Híbrido (α=0,4) | 0,039 | 0,055 | 19,4% | 29,7% | sim |
+
+- **Pergunta de pesquisa:** sim — o perfil de 5 jogos foi melhor que o de 1 jogo em 4 dos 5 modelos personalizados (Wilcoxon pareado, 5%).
+- **Melhor modelo:** Híbrido (α=0,4) — NDCG@10 de 0,039 → 0,055 ao passar de 1 para 5 jogos; acerta pelo menos um jogo em 19,4% dos usuários (aleatório: ~0,2%).
+- **Custo:** perfis maiores concentram as recomendações em jogos populares (cobertura do catálogo cai).
+- Figuras em `reports/figures/`, tabelas em `reports/results/`, notebooks executados em `notebooks/`.
+
 ## Bases de dados
 
 | Base | Conteúdo | Link |
@@ -29,6 +45,7 @@ As bases são unidas pelo `app_id`. Os arquivos brutos **não vão para o GitHub
 │   ├── raw/                 # bases brutas (baixadas com scripts/baixar_dados.py)
 │   └── processed/           # saídas da preparação (parquet)
 ├── notebooks/
+│   ├── 00_executar_no_colab.ipynb        # roda tudo no Colab (01 → 02 → 03)
 │   ├── 01_entendimento_dos_dados.ipynb   # CRISP-DM 1 e 2 — EDA
 │   ├── 02_preparacao_dos_dados.ipynb     # CRISP-DM 3 — limpeza, junção, divisão temporal
 │   └── 03_modelagem_e_avaliacao.ipynb    # CRISP-DM 4 e 5 — modelos, métricas, testes
@@ -57,7 +74,9 @@ python scripts/baixar_dados.py                       # baixa as duas bases para 
 jupyter notebook                                     # execute 01 -> 02 -> 03, nessa ordem
 ```
 
-**Google Colab:** clone o repositório numa célula (`!git clone ...`), entre na pasta com
+**Google Colab (mais simples):** abra `notebooks/00_executar_no_colab.ipynb` no Colab (Arquivo → Abrir notebook → GitHub) e use **Ambiente de execução → Executar tudo**. Ele baixa as bases, executa os três notebooks e baixa um `resultados.zip`.
+
+**Colab manual:** clone o repositório numa célula (`!git clone ...`), entre na pasta com
 `%cd steam-recomendador`, rode `!pip install -r requirements.txt` e `!python scripts/baixar_dados.py`
 e abra os notebooks da pasta `notebooks/`.
 
