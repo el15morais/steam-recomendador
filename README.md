@@ -3,7 +3,7 @@
 Projeto da disciplina de **Projeto de Mineração de Dados** (Centro Universitário FAG).
 Metodologia **CRISP-DM**.
 
-**Equipe:** Antonio Landim · Gabriel Morais · Kaue Correa · Pedro Paulo
+**Equipe:** Antonio Landim · Gabriel Morais · Kauê Correia · Pedro Paulo
 
 ## Pergunta de pesquisa
 > Usar vários jogos recentes (5) gera recomendações mais coerentes do que usar apenas um jogo?
