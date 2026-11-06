@@ -27,6 +27,7 @@ Com ela dá para montar perfis reais, medir a qualidade das recomendações com 
 - **Pergunta de pesquisa:** sim — o perfil de 5 jogos foi melhor que o de 1 jogo em 4 dos 5 modelos personalizados (Wilcoxon pareado, 5%).
 - **Melhor modelo:** Híbrido (α=0,4) — NDCG@10 de 0,039 → 0,055 ao passar de 1 para 5 jogos; acerta pelo menos um jogo em 19,4% dos usuários (aleatório: ~0,2%).
 - **Custo:** perfis maiores concentram as recomendações em jogos populares (cobertura do catálogo cai).
+- **Avaliação qualitativa (grupo, notas 0 a 2):** nota média 1,57 com 1 jogo e 1,70 com 5 jogos; 60,0% → 70,0% de recomendações relevantes (nota 2).
 - Figuras em `reports/figures/`, tabelas em `reports/results/`, notebooks executados em `notebooks/`.
 
 ## Bases de dados

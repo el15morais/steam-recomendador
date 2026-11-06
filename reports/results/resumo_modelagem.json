@@ -2,11 +2,11 @@
   "melhor_alpha": 0.4,
   "svd_dimensoes": 16,
   "tempos_treino_s": {
-    "Popularidade": 0.06369757652282715,
-    "Conteúdo TF-IDF (média)": 0.2510840892791748,
-    "Conteúdo TF-IDF (máximo)": 0.24623489379882812,
-    "Colaborativo item-item": 5.992024898529053,
-    "Fatoração SVD": 0.8390789031982422
+    "Popularidade": 0.04322052001953125,
+    "Conteúdo TF-IDF (média)": 0.17674589157104492,
+    "Conteúdo TF-IDF (máximo)": 0.1671276092529297,
+    "Colaborativo item-item": 2.865868330001831,
+    "Fatoração SVD": 0.4906039237976074
   },
   "densidade_matriz": 0.0008827750653077408,
   "usuarios_validacao": 1500,
